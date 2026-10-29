@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Trace"
+  },
+  "android": {
+    "app_name": "Trace"
+  }
+}

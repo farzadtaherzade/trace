@@ -1,38 +1,89 @@
 {
   "expo": {
-    "name": "trace",
+    "name": "Trace",
     "slug": "trace",
     "version": "1.0.0",
+    "description": "A private, local-first route journal.",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/trace-icon.png",
     "scheme": "trace",
     "userInterfaceStyle": "automatic",
+    "locales": {
+      "en": "./languages/en.json",
+      "fa": "./languages/fa.json"
+    },
+    "backgroundColor": "#0A0A0A",
+    "primaryColor": "#34D399",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.farzad.trace"
     },
     "android": {
+      "package": "com.farzad.trace",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#0A0A0A",
+        "foregroundImage": "./assets/images/trace-icon-foreground.png",
+        "monochromeImage": "./assets/images/trace-icon-monochrome.png"
       },
+      "allowBackup": false,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "bundler": "metro",
+      "favicon": "./assets/images/trace-icon.png",
+      "name": "Trace",
+      "shortName": "Trace",
+      "description": "A private, local-first route journal.",
+      "themeColor": "#0A0A0A",
+      "backgroundColor": "#0A0A0A",
+      "barStyle": "black",
+      "splash": {
+        "backgroundColor": "#0A0A0A",
+        "image": "./assets/images/trace-splash-icon.png",
+        "resizeMode": "contain"
+      }
     },
     "plugins": [
       "expo-router",
       [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "fa"],
+            "android": ["en", "fa"]
+          },
+          "supportsRTL": true,
+          "forcesRTL": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to trace your routes with your location, even in the background.",
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to trace your routes with your location.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Trace uses your photos only as optional attachments to your trips.",
+          "cameraPermission": "Trace uses the camera only when you add a photo to a trip.",
+          "microphonePermission": false
+        }
+      ],
+      [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#0A0A0A",
+          "image": "./assets/images/trace-splash-icon.png",
+          "imageWidth": 96
         }
-      ]
+      ],
+      "expo-sqlite",
+      "expo-localization",
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,

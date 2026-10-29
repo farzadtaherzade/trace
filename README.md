@@ -1,56 +1,90 @@
-# Welcome to your Expo app 👋
+# Trace
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![Build Android APK](https://github.com/farzadtaherzade/trace/actions/workflows/build-apk.yml/badge.svg)](https://github.com/farzadtaherzade/trace/actions/workflows/build-apk.yml)
 
-## Get started
+Trace is a private, local-first route journal. Record running, walking, cycling and driving
+routes with background GPS, get distance milestone rewards, mark nearby stores as treat
+spots, and keep your full history on the device.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Live tracing** — activity picker (run / walk / cycle / drive), 3-2-1 countdown,
+  auto-pause when you stop moving, live HUD with distance, duration, pace/speed and calories.
+- **Background GPS** — routes keep recording when the app is backgrounded or the screen is
+  locked (requires a development build).
+- **Pause and resume** — pause a route and continue within 20 minutes. After 20 minutes the
+  route is saved as *unfinished*: resume it later or mark it incomplete.
+- **Milestones and treats** — 300 m, 1 km, 2 km, 5 km, 10 km unlock rewards with haptics,
+  voice announcements and confetti. Mark nearby stores on the map and check in within 100 m
+  to earn a treat.
+- **History and detail** — speed-coloured route, start/finish markers, route replay,
+  per-km splits, elevation chart, weather at trace time, photos, rename and delete.
+- **Goals, streaks and challenges** — daily/weekly distance goals with activity rings,
+  consecutive-day streaks, a solo weekly 5 km challenge and a reward shelf.
+- **Share and export** — share a route card as an image, export a single route as GPX, or
+  back up everything as JSON.
+- **Themes and languages** — dark / light / system theme, English / فارسی with full RTL layout.
+  Persian devices open in Persian automatically.
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run locally
 
 ```bash
-npm run reset-project
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Use `npm run android`, `npm run ios`, or `npm run web` to open a specific platform.
 
-### Other setup steps
+### Development build required
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Background GPS, the map, notifications, haptics and speech are native modules, so a
+development build is required — Expo Go is not enough:
 
-## Learn more
+```bash
+npx expo run:android      # or: npx expo run:ios
+# or a cloud build
+eas build --profile development
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Google Maps on Android
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+`react-native-maps` needs a Google Maps API key on Android. Create one in the Google Cloud
+console (enable *Maps SDK for Android*, then restrict the key to this app's package name and
+SHA-1) and add it to `app.json`:
 
-## Join the community
+```json
+["react-native-maps", { "androidGoogleMapsApiKey": "YOUR_KEY" }]
+```
 
-Join our community of developers creating universal apps.
+Without a key, iOS works fully and Android shows a blank map.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Download a ready-made APK
+
+Every push to `main` builds a universal APK (all CPU architectures, signed with the debug
+key so it installs directly). Open the
+[Actions tab](https://github.com/farzadtaherzade/trace/actions/workflows/build-apk.yml),
+open the latest **Build Android APK** run, and download the `trace-universal-apk` artifact.
+You can also trigger a build yourself with the **Run workflow** button.
+
+## Quality checks
+
+```bash
+npm run typecheck
+npm run lint
+npx expo export --platform all
+```
+
+## Project structure
+
+- `src/app/` — Expo Router screens and layouts.
+- `src/components/` — UI catalog (`ui/`) plus `map-canvas`, which renders
+  `react-native-maps` on native and a route preview on web.
+- `src/constants/` — design tokens (dark + light), tabs, storage keys, map styles.
+- `src/i18n/` — `en.ts` and `fa.ts` translations.
+- `src/lib/` — SQLite data layer, geo/format helpers, background location task,
+  notifications, weather, GPX, and platform-specific drivers.
+- `src/providers/` — theme, language and tracking state.
+- `.web.ts` files provide browser fallbacks (no SQLite, no background location task).
+
+Set unique `ios.bundleIdentifier` and `android.package` values in `app.json` before store
+distribution.

@@ -1,0 +1,22 @@
+{
+  "colors": {
+    "background": "#F6F6F4",
+    "card": "#FFFFFF",
+    "border": "#E2E2DE",
+    "text": "#101012",
+    "textDim": "#6E6E6A",
+    "accent": "#0E9F6E",
+    "accentDim": "#D9F2E7",
+    "danger": "#DC2626"
+  },
+  "radii": {
+    "control": 12,
+    "card": 16,
+    "pill": 999
+  },
+  "spacing": {
+    "gutter": 16,
+    "card": 20,
+    "section": 32
+  }
+}

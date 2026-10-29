@@ -1,57 +1,47 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+import { DarkTheme, type Theme } from 'expo-router';
 
-import '@/global.css';
+import darkTokens from './design-tokens.json';
+import lightTokens from './design-tokens.light.json';
 
-import { Platform } from 'react-native';
+export interface ColorSet {
+  background: string;
+  card: string;
+  border: string;
+  text: string;
+  textDim: string;
+  accent: string;
+  accentDim: string;
+  danger: string;
+}
 
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
-} as const;
+export const darkColors: ColorSet = {
+  background: darkTokens.colors.background,
+  card: darkTokens.colors.card,
+  border: darkTokens.colors.border,
+  text: darkTokens.colors.text,
+  textDim: darkTokens.colors.textDim,
+  accent: darkTokens.colors.accent,
+  accentDim: darkTokens.colors.accentDim,
+  danger: darkTokens.colors.danger,
+};
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export const lightColors: ColorSet = {
+  background: lightTokens.colors.background,
+  card: lightTokens.colors.card,
+  border: lightTokens.colors.border,
+  text: lightTokens.colors.text,
+  textDim: lightTokens.colors.textDim,
+  accent: lightTokens.colors.accent,
+  accentDim: lightTokens.colors.accentDim,
+  danger: lightTokens.colors.danger,
+};
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+export type ColorToken = keyof ColorSet;
+
+export const Radii = { ...darkTokens.radii } as const;
 
 export const Spacing = {
+  ...darkTokens.spacing,
   half: 2,
   one: 4,
   two: 8,
@@ -61,5 +51,20 @@ export const Spacing = {
   six: 64,
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+export const MaxContentWidth = 800 as const;
+
+export function navigationThemeFor(colors: ColorSet, isDark: boolean): Theme {
+  return {
+    ...DarkTheme,
+    dark: isDark,
+    colors: {
+      ...DarkTheme.colors,
+      primary: colors.accent,
+      background: colors.background,
+      card: colors.card,
+      text: colors.text,
+      border: colors.border,
+      notification: colors.accent,
+    },
+  };
+}
